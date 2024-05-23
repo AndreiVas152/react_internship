@@ -13,7 +13,7 @@ Initial view
 
 STAFF DEBUG INFO
 Project structure requirements
-Rename App.js to App.jsx / App.tsx. App - main app file.
+Rename App.tsx to App.jsx / App.tsx. App - main app file.
 
 Delete unnecessary files:
 
