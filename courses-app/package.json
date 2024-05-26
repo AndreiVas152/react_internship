@@ -19,7 +19,7 @@
     "eject": "react-scripts eject",
     "eslint": "eslint src",
     "eslint:fix": "eslint src",
-    "prepare": "husky",
+    "prepare": "cd .. && husky",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepublish": "npm run eslint:fix"
   },
