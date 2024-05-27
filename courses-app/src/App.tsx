@@ -1,18 +1,26 @@
-import React, {Fragment} from "react";
+import React, { useState} from "react";
 import Header from "./components/Header/Header";
-import CourseCard from "./components/Courses/components/CourseCard/CourseCard";
 import {mockedCoursesList} from "./Assets/mockedCoursesList";
+import EmptyCourseList from "./components/EmptyCourseList/EmptyCourseList";
+import Courses from "./components/Courses/Courses";
+import Stack from "./components/common/Stack";
+import CourseInfo from "./components/CourseInfo/CourseInfo";
+import {CourseDto} from "./DTO/CourseDto";
+
 
 function App() {
+    const [selectedCourse, setSelectedCourse] = useState<CourseDto | null>(null)
+    const courseList = mockedCoursesList
+
     return (
-        <Fragment>
+        <Stack style={{width: '100vw', height: '100vh'}}>
             <Header></Header>
-
-            {mockedCoursesList.map(u => <CourseCard id={u.id} title={u.title} description={u.description}
-                                                    creationDate={u.creationDate} duration={u.duration}
-                                                    authors={u.authors}/>)}
-        </Fragment>
-
+            <Courses courses={courseList} selectedCourse={selectedCourse} onShowCourse={setSelectedCourse}/>
+            <EmptyCourseList visible={!courseList || !courseList.length}/>
+            <CourseInfo course={selectedCourse} onBack={() => {
+                setSelectedCourse(null)
+            }}/>
+        </Stack>
     )
 }
 
