@@ -1,25 +1,29 @@
-import React, { useState} from "react";
-import Header from "./components/Header/Header";
-import {mockedCoursesList} from "./Assets/mockedCoursesList";
-import EmptyCourseList from "./components/EmptyCourseList/EmptyCourseList";
-import Courses from "./components/Courses/Courses";
-import Stack from "./components/common/Stack";
-import CourseInfo from "./components/CourseInfo/CourseInfo";
-import {CourseDto} from "./DTO/CourseDto";
+import React, {useCallback, useState} from "react";
+import {mockedAuthorsList, mockedCoursesList} from "./Assets/mockedCoursesList";
+import Stack from "./common/Stack/Stack";
+import {CourseDto} from "./Dto/CourseDto";
+import {CourseInfo, Courses, EmptyCourseList, Login, Registration, Header, CreateCourse} from "./components"
 
 
 function App() {
     const [selectedCourse, setSelectedCourse] = useState<CourseDto | null>(null)
-    const courseList = mockedCoursesList
+    const [courses, setCourses] = useState<CourseDto[]>(mockedCoursesList)
+
+    const onAddNewCourse = useCallback((a: CourseDto) => {
+        setCourses([...courses, a])
+    }, [setCourses]);
 
     return (
         <Stack style={{width: '100vw', height: '100vh'}}>
-            <Header></Header>
-            <Courses courses={courseList} selectedCourse={selectedCourse} onShowCourse={setSelectedCourse}/>
-            <EmptyCourseList visible={!courseList || !courseList.length}/>
+            <Header/>
+            <Courses courses={courses} selectedCourse={selectedCourse} onShowCourse={setSelectedCourse}/>
+            <EmptyCourseList visible={!courses || !courses.length}/>
             <CourseInfo course={selectedCourse} onBack={() => {
                 setSelectedCourse(null)
             }}/>
+            <Registration/>
+            <Login/>
+            <CreateCourse onAddNewCourse={onAddNewCourse} allAuthors={mockedAuthorsList}/>
         </Stack>
     )
 }

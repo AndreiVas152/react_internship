@@ -2,9 +2,9 @@ import React from "react";
 import {mockedAuthorsList} from "../../../../Assets/mockedCoursesList";
 import GetCourseDuration from "../../../../helpers/getCourseDuration";
 import Button from "../../../../common/Button/Button";
-import {CourseDto} from "src/DTO/CourseDto"
-import Stack from "../../../common/Stack";
-import Typography from "../../../common/Typography";
+import {CourseDto} from "src/Dto/CourseDto"
+import Stack from "../../../../common/Stack/Stack";
+import Typography from "../../../../common/Typography/Typography";
 import GetAuthorNames from "../../../../helpers/getAuthorNames";
 
 interface Props {

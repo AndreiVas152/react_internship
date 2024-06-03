@@ -1,17 +1,15 @@
 import React from "react";
-import Button from "../../common/Button/Button";
-import {CourseDto} from "../../DTO/CourseDto";
-import CourseCard from "./components/CourseCard/CourseCard";
-import Stack from "../common/Stack";
-import CourseInfo from "../CourseInfo/CourseInfo";
+import {Button, Stack} from "../../common";
+import {CourseDto} from "../../Dto/CourseDto";
+import {CourseCard} from "../index";
 
-interface Props {
+interface CoursesProps {
     courses: CourseDto[],
     selectedCourse: CourseDto | null,
     onShowCourse: (course: CourseDto) => void
 }
 
-const Courses: React.FC<Props> = ({courses, selectedCourse, onShowCourse}) => {
+const Courses: React.FC<CoursesProps> = ({courses, selectedCourse, onShowCourse}) => {
     if (selectedCourse || !courses?.length) {
         return null;
     }
@@ -19,7 +17,7 @@ const Courses: React.FC<Props> = ({courses, selectedCourse, onShowCourse}) => {
     return (
         <Stack style={{paddingLeft: 150, paddingRight: 150}}>
             <Button style={{alignSelf: 'flex-end', marginBottom: 32}}>ADD NEW COURSE</Button>
-            {courses.map(c => <CourseCard onShowCourse={onShowCourse} course={c}/>)}
+            {courses.map(c => <CourseCard key={c.id} onShowCourse={onShowCourse} course={c}/>)}
         </Stack>
     )
 }
