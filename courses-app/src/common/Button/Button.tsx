@@ -2,7 +2,7 @@ import React, {PropsWithChildren} from "react"
 
 interface ButtonProps extends PropsWithChildren {
     style?: React.CSSProperties
-    onClick?: () => void
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
     type?: 'button' | 'submit' | 'reset'
 }
 

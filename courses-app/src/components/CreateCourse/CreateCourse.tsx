@@ -5,7 +5,6 @@ import Validation from "../../helpers/Validation";
 import CourseAuthors from "./CourseAuthors/CourseAuthors";
 import AuthorsList from "./AuthorsList/AuthorsList";
 import GetCourseDuration from "../../helpers/getCourseDuration";
-import {mockedCoursesList} from "../../Assets/mockedCoursesList";
 import generateGUID from "../../helpers/generateGUID";
 import {getCreationDate} from "../../helpers/getCreationDate";
 
