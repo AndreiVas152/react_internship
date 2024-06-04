@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Validation from "../../helpers/Validation";
-import {Button, Stack, TextInput} from "../../common";
+import {Button, Stack, TextInput, Typography} from "../../common";
 
 
 const Login :React.FC = () => {
@@ -53,7 +53,8 @@ const Login :React.FC = () => {
                            onChange={handleChange}
                            label={'Password'}
                            placeholder={'please enter your password'}/>
-                <Button type={'submit'}>Login</Button>
+                <Button style={{marginBottom: 16}} type={'submit'}>Login</Button>
+                <Typography>If you do not have an account you may <a style={{fontWeight: 700, color: 'black'}} href={'/register'}>Register</a>.</Typography>
             </Stack>
         </form>
     )

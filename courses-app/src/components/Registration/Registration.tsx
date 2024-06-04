@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {Button, Stack, TextInput} from "../../common";
+import {Button, Stack, TextInput, Typography} from "../../common";
 import Validation from "../../helpers/Validation";
 
 interface RegistrationProps {
@@ -69,7 +69,8 @@ const Registration: React.FC<RegistrationProps> = () => {
                            onChange={handleChange}
                            label={'Password'}
                            placeholder={'please enter your password'}/>
-                <Button type={'submit'}>Register</Button>
+                <Button style={{marginBottom: 16}} type={'submit'}>Register</Button>
+                <Typography>If you have an account you may <a style={{fontWeight: 700, color: 'black'}} href={'/login'}>Log in</a>.</Typography>
             </Stack>
         </form>
     )

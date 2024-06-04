@@ -36,6 +36,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
         duration: 0
     })
     const [errors, setErrors] = useState<CreateCourseFormErrors>({})
+    const [authorsList, setAuthorsList] = useState<AuthorDto[]>(allAuthors)
 
     const handleChange = (event) => {
         const target = event.target
@@ -44,15 +45,15 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
 
     const availableAuthors = useMemo(() => {
         if (formValues.authors) {
-            return allAuthors.filter(a => formValues.authors.every(fa => fa !== a.id));
+            return authorsList.filter(a => formValues.authors.every(fa => fa !== a.id));
         }
 
-    }, [allAuthors, formValues.authors]);
+    }, [authorsList, formValues.authors]);
 
     const courseAuthors = useMemo(() => {
         if (formValues.authors)
-            return allAuthors.filter(a => formValues.authors.some(id => id === a.id));
-    }, [allAuthors, formValues.authors])
+            return authorsList.filter(a => formValues.authors.some(id => id === a.id));
+    }, [authorsList, formValues.authors])
 
     const onAdd = useCallback((a: AuthorDto) => {
         setFormValues(prev => ({
@@ -69,12 +70,10 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
     }, [setFormValues]);
 
     const onAuthorCreated = useCallback((a: AuthorDto) => {
-        allAuthors.push(a);
-        setFormValues(prev => ({
-            ...prev,
-            authors: [...prev.authors, a.id]
-        }));
-    }, [allAuthors, setFormValues]);
+        setAuthorsList(prev =>
+            ([...prev, a]
+            ))
+    }, [authorsList, setFormValues]);
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -96,6 +95,12 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
             description: formValues.description,
             creationDate: getCreationDate()
         })
+        setFormValues({
+            title: '',
+            authors: [],
+            description: '',
+            duration: 0
+        })
     }
 
     return (
@@ -111,8 +116,9 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
                                type={'textArea'} errorText={errors.description} onChange={handleChange}/>
                     <h3>Duration</h3>
                     <Stack flexDirection={'row'} style={{justifyContent: 'flex-start'}}>
-                        <TextInput name={'duration'} value={formValues.duration} label={'Duration'}
-                                   placeholder={'input course duration'}
+                        <TextInput type={'number'} name={'duration'} value={formValues.duration} label={'Duration'}
+                                   min={0}
+                                   placeholder={'Input duration'}
                                    errorText={errors.duration} onChange={handleChange}/>
                         <Typography>{GetCourseDuration(formValues.duration)}</Typography>
                     </Stack>

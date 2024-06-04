@@ -5,9 +5,10 @@ import Typography from "../Typography/Typography";
 interface TextInputProps {
     label: string
     type?: HTMLInputTypeAttribute | 'textArea'
+    min?: number
     errorText?: string
     name?: string
-    value? : string | number,
+    value?: string | number,
     placeholder?: string
     isDisabled?: boolean
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
@@ -21,10 +22,10 @@ const TextInput: React.FC<TextInputProps> = ({
                                                  name,
                                                  errorText,
                                                  value,
-                                                 type
+                                                 type,
+                                                 min
                                              }) => {
 
-    // errorText = 'this is an error'
     return (
         <Stack style={{marginBottom: 8}}>
             <label>
@@ -44,6 +45,7 @@ const TextInput: React.FC<TextInputProps> = ({
                         : <input
                             name={name}
                             type={type ? type : 'text'}
+                            min={min}
                             placeholder={placeholder}
                             disabled={isDisabled}
                             onChange={onChange}
