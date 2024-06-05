@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint src",
-    "eslint:fix": "eslint src",
+    "eslint:fix": "eslint src --fix",
     "prepare": "cd .. && husky",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepublish": "npm run eslint:fix"
@@ -42,17 +42,14 @@
     ]
   },
   "devDependencies": {
-    "@eslint/compat": "^1.0.1",
-    "@eslint/js": "^9.3.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-react": "^7.34.1",
+    "@eslint/compat": "^1.0.3",
+    "@eslint/js": "^9.4.0",
+    "eslint": "^9.4.0",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.3.0",
     "husky": "^9.0.11",
     "prettier": "^3.2.5",
-    "typescript-eslint": "^7.10.0"
+    "typescript-eslint": "^7.12.0"
   }
 }

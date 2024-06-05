@@ -1,0 +1,9 @@
+/.idea/.gitignore
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/jsLinters/eslint.xml
+/.idea/modules.xml
+/.idea/react-components.iml
+/.idea/vcs.xml
+/courses-app/package-lock.json
+/courses-app/README.md
+

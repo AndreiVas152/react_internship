@@ -1,20 +1,19 @@
 import React from "react";
-import {PropsWithChildren} from "react";
-import Stack from "../common/Stack";
-import Typography from "../common/Typography";
-import {CourseDto} from "../../DTO/CourseDto";
+import Stack from "../../common/Stack/Stack";
+import Typography from "../../common/Typography/Typography";
+import {CourseDto} from "../../Dto/CourseDto";
 import Button from "../../common/Button/Button";
 import GetCourseDuration from "../../helpers/getCourseDuration";
 import GetAuthorNames from "../../helpers/getAuthorNames";
 import {mockedAuthorsList} from "../../Assets/mockedCoursesList";
 
 
-interface Props extends PropsWithChildren {
+interface Props {
     course: CourseDto | null,
     onBack: () => void;
 }
 
-const CourseInfo: React.FC<Props> = ({children, course, onBack}) => {
+const CourseInfo: React.FC<Props> = ({ course, onBack}) => {
     if (!course) {
         return null;
     }
