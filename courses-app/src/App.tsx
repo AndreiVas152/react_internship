@@ -11,7 +11,7 @@ function App() {
 
     const onAddNewCourse = useCallback((a: CourseDto) => {
         setCourses([...courses, a])
-    }, [setCourses]);
+    }, [setCourses, courses]);
 
     return (
         <Stack style={{width: '100vw', height: '100vh'}}>

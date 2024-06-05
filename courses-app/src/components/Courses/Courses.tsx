@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Button, Stack} from "../../common";
 import {CourseDto} from "../../Dto/CourseDto";
 import {CourseCard, SearchBar} from "../index";
@@ -26,6 +26,12 @@ const Courses: React.FC<CoursesProps> = ({courses, selectedCourse, onShowCourse}
             setFilteredCourses(searchedCourses)
         }
     }, [search, courses]);
+
+    useEffect(()=> {
+        filterCourses()
+    }, [courses])
+
+
 
     if (selectedCourse || !courses?.length) {
         return null;
