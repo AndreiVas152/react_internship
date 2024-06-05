@@ -1,0 +1,2 @@
+cd courses-app
+npm run prepublish

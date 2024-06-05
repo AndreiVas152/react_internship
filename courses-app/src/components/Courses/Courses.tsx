@@ -29,7 +29,7 @@ const Courses: React.FC<CoursesProps> = ({courses, selectedCourse, onShowCourse}
 
     useEffect(()=> {
         filterCourses()
-    }, [courses])
+    }, [courses, filterCourses])
 
 
 

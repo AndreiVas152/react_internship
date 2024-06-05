@@ -33,7 +33,7 @@ const AuthorsList: React.FC<AuthorListProps> = ({allAuthors, onCreateAuthor, onA
         onCreateAuthor(newAuthor);
         setNewAuthorName('')
         return false;
-    }, [allAuthors, newAuthorName, onCreateAuthor]);
+    }, [ newAuthorName, onCreateAuthor]);
 
     return <Stack>
         <h3>Authors</h3>
