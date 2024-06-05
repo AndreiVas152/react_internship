@@ -1,4 +1,4 @@
-export interface AuthorDTO{
+export interface AuthorDto {
     id: string
     name: string
 }

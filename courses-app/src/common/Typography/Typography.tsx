@@ -1,12 +1,12 @@
 import React from "react";
 import {PropsWithChildren} from "react";
 
-interface Props extends PropsWithChildren {
+interface TypographyProps extends PropsWithChildren {
     style?: React.CSSProperties
 }
 
 
-const Typography: React.FC<Props> = ({children, style}) => {
+const Typography: React.FC<TypographyProps> = ({children, style}) => {
     return (
         <span style={{
             overflow: "hidden",
@@ -15,7 +15,8 @@ const Typography: React.FC<Props> = ({children, style}) => {
             fontSize: 11,
             margin: 0,
             ...style
-        }}>{children}</span>
+        }}>{children}
+        </span>
     )
 }
 

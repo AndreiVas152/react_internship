@@ -1,11 +1,12 @@
 import React, {PropsWithChildren} from "react"
 
-interface Props extends PropsWithChildren {
+interface ButtonProps extends PropsWithChildren {
     style?: React.CSSProperties
-    onClick?: () => void
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
+    type?: 'button' | 'submit' | 'reset'
 }
 
-const Button: React.FC<Props> = ({onClick, style, children}) => {
+const Button: React.FC<ButtonProps> = ({onClick, style, children, type}) => {
     return (
         <button style={{
             display: 'flex',
@@ -16,7 +17,7 @@ const Button: React.FC<Props> = ({onClick, style, children}) => {
             borderWidth: 0,
             ...style
         }}
-                type={"button"} onClick={onClick}>
+                type={type} onClick={onClick}>
             <h5 style={{
                 color: '#FFFFFF',
                 fontWeight: 700,
