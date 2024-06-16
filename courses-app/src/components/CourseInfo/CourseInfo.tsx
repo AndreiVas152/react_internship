@@ -6,14 +6,16 @@ import Button from "../../common/Button/Button";
 import GetCourseDuration from "../../helpers/getCourseDuration";
 import GetAuthorNames from "../../helpers/getAuthorNames";
 import {mockedAuthorsList} from "../../Assets/mockedCoursesList";
+import {useNavigate} from "react-router-dom";
 
 
 interface Props {
     course: CourseDto | null,
-    onBack: () => void;
 }
 
-const CourseInfo: React.FC<Props> = ({ course, onBack}) => {
+const CourseInfo: React.FC<Props> = ({ course}) => {
+    const navigate = useNavigate()
+
     if (!course) {
         return null;
     }
@@ -54,7 +56,7 @@ const CourseInfo: React.FC<Props> = ({ course, onBack}) => {
                     </Stack>
                 </Stack>
             </Stack>
-            <Button style={{alignSelf: 'flex-end', marginTop: 32}} onClick={onBack}>BACK</Button>
+            <Button style={{alignSelf: 'flex-end', marginTop: 32}} onClick={() => navigate("/courses", {replace: true})}>BACK</Button>
         </Stack>
     )
 }

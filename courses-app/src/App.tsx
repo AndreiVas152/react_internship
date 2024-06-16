@@ -2,11 +2,14 @@ import React, {useCallback, useState} from "react";
 import {mockedAuthorsList, mockedCoursesList} from "./Assets/mockedCoursesList";
 import Stack from "./common/Stack/Stack";
 import {CourseDto} from "./Dto/CourseDto";
-import {CourseInfo, Courses, EmptyCourseList, Login, Registration, Header, CreateCourse} from "./components"
+import {Courses, Login, Registration, Header, CreateCourse, RedirectComponent} from "./components"
+import { Route, Routes} from "react-router";
+import CourseInfoWrapper from "./components/CourseInfo/CourseInfoWrapper/CourseInfoWrapper";
+
+
 
 
 function App() {
-    const [selectedCourse, setSelectedCourse] = useState<CourseDto | null>(null)
     const [courses, setCourses] = useState<CourseDto[]>(mockedCoursesList)
 
     const onAddNewCourse = useCallback((a: CourseDto) => {
@@ -16,14 +19,17 @@ function App() {
     return (
         <Stack style={{width: '100vw', height: '100vh'}}>
             <Header/>
-            <Courses courses={courses} selectedCourse={selectedCourse} onShowCourse={setSelectedCourse}/>
-            <EmptyCourseList visible={!courses || !courses.length}/>
-            <CourseInfo course={selectedCourse} onBack={() => {
-                setSelectedCourse(null)
-            }}/>
-            <Registration/>
-            <Login/>
-            <CreateCourse onAddNewCourse={onAddNewCourse} allAuthors={mockedAuthorsList}/>
+            <Routes>
+                <Route path="/" element={<RedirectComponent/>} />
+                <Route path="/courses" element={<Courses courses={courses}/>}/>
+                <Route path="/courses/:courseId"
+                       element={<CourseInfoWrapper courses={courses} />}/>
+                <Route path="/courses/add"
+                       element={<CreateCourse onAddNewCourse={onAddNewCourse} allAuthors={mockedAuthorsList}/>}/>
+                <Route path="/registration" element={<Registration/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/*" element={<RedirectComponent/>}/>
+            </Routes>
         </Stack>
     )
 }

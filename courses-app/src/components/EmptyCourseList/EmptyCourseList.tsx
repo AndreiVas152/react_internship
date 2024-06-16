@@ -2,15 +2,11 @@ import React from "react";
 import Button from "../../common/Button/Button";
 import Stack from "../../common/Stack/Stack";
 
-interface Props {
-    visible: boolean
-}
 
-const EmptyCourseList: React.FC<Props> = ({visible}) => {
 
-    if (!visible) {
-        return null;
-    }
+const EmptyCourseList: React.FC = () => {
+
+
     return (
 
         <Stack style={{

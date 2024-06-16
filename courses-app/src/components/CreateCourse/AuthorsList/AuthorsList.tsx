@@ -1,5 +1,5 @@
 import {AuthorDto} from "../../../Dto/AuthorDto";
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState} from "react";
 import generateGUID from "../../../helpers/generateGUID";
 import {AuthorItem, Button, Stack, TextInput} from "../../../common";
 import Validation from "../../../helpers/Validation";
@@ -20,7 +20,8 @@ const AuthorsList: React.FC<AuthorListProps> = ({allAuthors, onCreateAuthor, onA
     }, [setNewAuthorName])
 
 
-    const handleAddNewAuthor = useCallback(() => {
+    const handleAddNewAuthor = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
         const currentError = Validation.author(newAuthorName)
         setError(currentError)
         if (currentError) {

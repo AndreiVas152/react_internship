@@ -1,22 +1,23 @@
 import React, {useState} from "react";
 import Validation from "../../helpers/Validation";
 import {Button, Stack, TextInput, Typography} from "../../common";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {LoginDto} from "../../Dto/RegistrationDto";
+import { useUserContext} from "../../context/userContext";
 
+const Login: React.FC = () => {
 
-const Login :React.FC = () => {
-
-    interface LoginFormValues {
-        email: string,
-        password: string
-    }
+    const userContext = useUserContext()
 
     interface LoginFormErrors {
         email?: string,
         password?: string
     }
 
-    const [formValues, setFormValues] = useState<LoginFormValues>({} as LoginFormValues)
+    const [formValues, setFormValues] = useState<LoginDto>({} as LoginDto)
     const [errors, setErrors] = useState<LoginFormErrors>({})
+    const navigate = useNavigate()
 
     const handleChange = (event) => {
         const target = event.target
@@ -24,7 +25,7 @@ const Login :React.FC = () => {
         setFormValues({...formValues, [target.name]: target.value})
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         setErrors({})
         const currentErrors: LoginFormErrors = {
@@ -32,10 +33,21 @@ const Login :React.FC = () => {
             password: Validation.password(formValues.password)
         }
         setErrors(currentErrors)
-        if(!Object.values(currentErrors).every(value => value === undefined)){
+        if (!Object.values(currentErrors).every(value => value === undefined)) {
             return
         }
-        console.log(`Successfully logged in user ${formValues.email}`)
+        try {
+            const response= await axios.post('http://localhost:4000/login', {
+                email: formValues.email,
+                password: formValues.password
+            })
+            if (response.data.successful) {
+                console.log(response)
+                localStorage.setItem("accessToken", response.data.result)
+                userContext.authenticate(response.data.user.name)
+                navigate("/courses", {replace: true})
+            }
+        }   catch(error){console.log("Login failed")}
     }
 
     return (
@@ -54,7 +66,8 @@ const Login :React.FC = () => {
                            label={'Password'}
                            placeholder={'please enter your password'}/>
                 <Button style={{marginBottom: 16}} type={'submit'}>Login</Button>
-                <Typography>If you do not have an account you may <a style={{fontWeight: 700, color: 'black'}} href={'/register'}>Register</a>.</Typography>
+                <Typography>If you do not have an account you may <Link style={{fontWeight: 700, color: 'black'}}
+                                                                        to={'/registration'}>Register</Link>.</Typography>
             </Stack>
         </form>
     )

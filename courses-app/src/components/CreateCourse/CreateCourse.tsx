@@ -7,6 +7,7 @@ import AuthorsList from "./AuthorsList/AuthorsList";
 import GetCourseDuration from "../../helpers/getCourseDuration";
 import generateGUID from "../../helpers/generateGUID";
 import {getCreationDate} from "../../helpers/getCreationDate";
+import {useNavigate} from "react-router-dom";
 
 
 interface CreateCourseProps {
@@ -37,6 +38,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
     })
     const [errors, setErrors] = useState<CreateCourseFormErrors>({})
     const [authorsList, setAuthorsList] = useState<AuthorDto[]>(allAuthors)
+    const navigate = useNavigate()
 
     const handleChange = (event) => {
         const target = event.target
@@ -95,12 +97,13 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
             description: formValues.description,
             creationDate: getCreationDate()
         })
-        setFormValues({
-            title: '',
-            authors: [],
-            description: '',
-            duration: 0
-        })
+        // setFormValues({
+        //     title: '',
+        //     authors: [],
+        //     description: '',
+        //     duration: 0
+        // })
+        navigate("/courses")
     }
 
     return (
@@ -130,10 +133,9 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
                 </Stack>
             </Stack>
             <Stack flexDirection={'row'} style={{justifyContent: "flex-end", marginTop: 24}}>
-                <Button style={{marginRight: 16}}>Cancel</Button>
+                <Button style={{marginRight: 16}} onClick={() => navigate("/courses", {replace: true})}>Cancel</Button>
                 <Button type={'submit'}>Create Course</Button>
             </Stack>
-
         </form>
     )
 }
