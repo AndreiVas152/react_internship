@@ -1,18 +1,17 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {Button, Stack} from "../../common";
 import {CourseDto} from "../../Dto/CourseDto";
-import {CourseCard, SearchBar} from "../index";
+import {CourseCard, EmptyCourseList, SearchBar} from "../index";
+import {useNavigate} from "react-router-dom";
 
 interface CoursesProps {
     courses: CourseDto[],
-    selectedCourse: CourseDto | null,
-    onShowCourse: (course: CourseDto) => void
 }
 
-const Courses: React.FC<CoursesProps> = ({courses, selectedCourse, onShowCourse}) => {
-
+const Courses: React.FC<CoursesProps> = ({courses}) => {
     const [filteredCourses, setFilteredCourses] = useState(courses)
     const [search, setSearch] = useState('')
+    const navigate = useNavigate()
 
     const filterCourses = useCallback(() => {
         if (!search) {
@@ -33,14 +32,16 @@ const Courses: React.FC<CoursesProps> = ({courses, selectedCourse, onShowCourse}
 
 
 
-    if (selectedCourse || !courses?.length) {
-        return null;
+    if (!courses?.length) {
+        return (
+            <EmptyCourseList/>
+        )
     }
     return (
         <Stack style={{paddingLeft: 150, paddingRight: 150}}>
             <SearchBar filterCourses={filterCourses} onChange={setSearch} search={search}></SearchBar>
-            <Button style={{alignSelf: 'flex-end', marginBottom: 32}}>ADD NEW COURSE</Button>
-            {filteredCourses.map(c => <CourseCard key={c.id} onShowCourse={onShowCourse} course={c}/>)}
+            <Button style={{alignSelf: 'flex-end', marginBottom: 32}} onClick={() =>{navigate("/courses/add", {replace: true})}}>ADD NEW COURSE</Button>
+            {filteredCourses.map(c => <CourseCard key={c.id} course={c}/>)}
         </Stack>
     )
 }

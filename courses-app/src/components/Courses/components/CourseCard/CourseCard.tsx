@@ -6,15 +6,16 @@ import {CourseDto} from "src/Dto/CourseDto"
 import Stack from "../../../../common/Stack/Stack";
 import Typography from "../../../../common/Typography/Typography";
 import GetAuthorNames from "../../../../helpers/getAuthorNames";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
     course: CourseDto,
-    onShowCourse : (course: CourseDto)=>void;
 }
 
 
 
-const CourseCard: React.FC<Props> = ({course, onShowCourse}) => {
+const CourseCard: React.FC<Props> = ({course}) => {
+    const navigate = useNavigate()
     return (
         <Stack flex={'none'} style={{
             backgroundColor: '#FFFFFF',
@@ -50,9 +51,7 @@ const CourseCard: React.FC<Props> = ({course, onShowCourse}) => {
                             style={{fontWeight: 500}}>Created:&nbsp;</Typography>
                         <Typography
                             style={{whiteSpace: 'nowrap'}}>{course.creationDate}</Typography></Stack>
-                    <Button style={{marginTop: 32}} onClick={()=>{
-                        onShowCourse(course)
-                    }}>Show Course</Button>
+                    <Button style={{marginTop: 32}} onClick={() => navigate(`/courses/${course.id}`)}>Show Course</Button>
                 </Stack>
             </Stack>
         </Stack>

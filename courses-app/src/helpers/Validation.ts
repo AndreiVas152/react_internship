@@ -1,10 +1,9 @@
 class Validation {
 
     static regEx = {
-        userName: /^\S+$/,
+        userName: /^[A-Za-z]{3,}(?:\s[A-Za-z]{3,})?$/,
             // /^[a-zA-Z0-9]{3,}$/,
-        email: /^\S+$/,
-            // /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{+}$/,
+        email: /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{+}$/,
         password: /^\S+$/,
             // /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,}$/
         title: /\S{2}.*/,
