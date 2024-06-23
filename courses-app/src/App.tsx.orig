@@ -1,0 +1,58 @@
+import React, {useEffect} from "react";
+import Stack from "./common/Stack/Stack";
+import {Courses, Login, Registration, Header, CreateCourse, RedirectComponent} from "./components"
+import {Route, Routes} from "react-router";
+import CourseInfoWrapper from "./components/CourseInfo/CourseInfoWrapper/CourseInfoWrapper";
+import {useAppDispatch, useAppSelector} from "./hooks/hooks";
+import {fetchCoursesThunk} from "./store/courses/thunks";
+import {fetchAuthorsThunk} from "./store/authors/thunks";
+<<<<<<< HEAD
+=======
+import {addCourseAction} from "./store/courses/actions";
+>>>>>>> origin/feature/redux_async_methods
+import {PrivateRoute} from "./components/PrivateRoute/PrivateRoute";
+
+
+function App() {
+    const {courses} = useAppSelector(state => state.courses);
+    const {authors} = useAppSelector(state => state.authors);
+    const dispatch = useAppDispatch()
+    const accessToken = localStorage.getItem("accessToken")
+
+    useEffect(() => {
+        if (accessToken) {
+            dispatch(fetchCoursesThunk())
+            dispatch(fetchAuthorsThunk())
+        }
+    }, [])
+
+<<<<<<< HEAD
+=======
+
+    const onAddNewCourse = useCallback((a: CourseDto) => {
+        dispatch(addCourseAction(a))
+    }, [courses]);
+
+>>>>>>> origin/feature/redux_async_methods
+    return (
+        <Stack style={{width: '100vw', height: '100vh'}}>
+            <Header/>
+            <Routes>
+                <Route path="/" element={<RedirectComponent/>}/>
+                <Route path="/courses" element={<Courses courses={courses}/>}/>
+                <Route path="/courses/:courseId"
+                       element={<CourseInfoWrapper courses={courses}/>}/>
+                <Route path="/courses/add"
+                       element={
+                           <PrivateRoute>
+                               <CreateCourse allAuthors={authors}/>
+                           </PrivateRoute>}/>
+                <Route path="/registration" element={<Registration/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/*" element={<RedirectComponent/>}/>
+            </Routes>
+        </Stack>
+    )
+}
+
+export default App;
