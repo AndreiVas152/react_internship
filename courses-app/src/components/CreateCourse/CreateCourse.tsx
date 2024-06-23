@@ -8,6 +8,8 @@ import GetCourseDuration from "../../helpers/getCourseDuration";
 import generateGUID from "../../helpers/generateGUID";
 import {getCreationDate} from "../../helpers/getCreationDate";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../hooks/hooks";
+import {addAuthorAction} from "../../store/authors/actions";
 
 
 interface CreateCourseProps {
@@ -39,6 +41,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
     const [errors, setErrors] = useState<CreateCourseFormErrors>({})
     const [authorsList, setAuthorsList] = useState<AuthorDto[]>(allAuthors)
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     const handleChange = (event) => {
         const target = event.target
@@ -72,6 +75,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
     }, [setFormValues]);
 
     const onAuthorCreated = useCallback((a: AuthorDto) => {
+        dispatch(addAuthorAction(a))
         setAuthorsList(prev =>
             ([...prev, a]
             ))
@@ -97,12 +101,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
             description: formValues.description,
             creationDate: getCreationDate()
         })
-        // setFormValues({
-        //     title: '',
-        //     authors: [],
-        //     description: '',
-        //     duration: 0
-        // })
         navigate("/courses")
     }
 

@@ -1,28 +1,30 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Logo from "./components/Logo/Logo";
 import Button from "../../common/Button/Button";
 import Stack from "../../common/Stack/Stack";
 import {useLocation, useNavigate} from "react-router-dom";
-import axios from "axios";
 import {Typography} from "../../common";
-import {useUserContext} from "../../context/userContext";
-
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {getUserInfoThunk, logoutThunk} from "../../store/user/thunks";
 
 
 const Header: React.FC = () => {
-    const userContext = useUserContext()
     const navigate = useNavigate()
     const location = useLocation()
-
+    const dispatch = useAppDispatch();
+    const selector = useAppSelector(state => state.user);
     const accessToken = localStorage.getItem("accessToken")
 
+    useEffect(()=> {
+        if(accessToken){
+            dispatch(getUserInfoThunk(accessToken))
+        }
+    }, [])
+
     const logout = async () => {
-        await axios.delete("http://localhost:4000/logout", {headers: {Authorization: (accessToken.replace("bearer ", ""))}})
-        localStorage.removeItem("accessToken")
-        userContext.logout()
+        dispatch(logoutThunk());
         navigate("/login")
     }
-
 
     return (
         <Stack flexDirection={"row"}
@@ -30,9 +32,9 @@ const Header: React.FC = () => {
                style={{justifyContent: "space-between", alignContent: "center", padding: '15px 30px'}}>
             <Logo></Logo>
             <Stack style={{alignItems: "center"}} flex={"none"} flexDirection={'row'}>
-                {(userContext.name && location.pathname !== "/login" && location.pathname !== "/registration") ? (
+                {(selector.name && location.pathname !== "/login" && location.pathname !== "/registration") ? (
                     <><Typography
-                        style={{marginRight: 16, fontWeight: 700, fontSize: 16}}>Welcome, {userContext.name}</Typography>
+                        style={{marginRight: 16, fontWeight: 700, fontSize: 16}}>Welcome, {selector.name}</Typography>
                         <Button onClick={() => logout()}>LOGOUT</Button>
                     </>) : null
                 }

@@ -1,0 +1,6 @@
+export const enum CourseActionTypes{
+    SAVE_COURSES = "SAVE_COURSES",
+    ADD_COURSE = "ADD_COURSE",
+    DELETE_COURSE = "DELETE_COURSE",
+    FETCH_COURSES = "FETCH_COURSES"
+}
