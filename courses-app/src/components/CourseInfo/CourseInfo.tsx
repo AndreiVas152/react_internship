@@ -5,8 +5,8 @@ import {CourseDto} from "../../Dto/CourseDto";
 import Button from "../../common/Button/Button";
 import GetCourseDuration from "../../helpers/getCourseDuration";
 import GetAuthorNames from "../../helpers/getAuthorNames";
-import {mockedAuthorsList} from "../../Assets/mockedCoursesList";
 import {useNavigate} from "react-router-dom";
+import {useAppSelector} from "../../hooks/hooks";
 
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
 
 const CourseInfo: React.FC<Props> = ({ course}) => {
     const navigate = useNavigate()
+    const {authors} = useAppSelector(state => state.authors)
 
     if (!course) {
         return null;
@@ -51,7 +52,7 @@ const CourseInfo: React.FC<Props> = ({ course}) => {
                         </Stack>
                         <Stack flexDirection={'row'}>
                             <Typography style={{fontWeight: 500}}>Authors:&nbsp;</Typography>
-                            <Typography>{GetAuthorNames(course.authors, mockedAuthorsList)}</Typography>
+                            <Typography>{GetAuthorNames(course.authors, authors)}</Typography>
                         </Stack>
                     </Stack>
                 </Stack>

@@ -1,13 +1,14 @@
-export interface LoginDto{
+export interface LoginDto {
     password: string,
     email: string
 }
 
-export interface RegistrationDto extends  LoginDto{
+export interface RegistrationDto extends LoginDto {
     name: string,
 }
 
-export interface UserDto extends RegistrationDto {
-    role: string
-    id: string
+export interface LoginResultDto {
+    name: string,
+    email: string,
+    token: string,
 }

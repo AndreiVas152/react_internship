@@ -1,4 +1,3 @@
-
 export interface CourseDto{
     id: string
     title: string,
@@ -6,4 +5,11 @@ export interface CourseDto{
     creationDate: string,
     duration: number,
     authors: string[],
+}
+
+export interface CreateCourseDto{
+    title: string
+    description: string
+    duration: string
+    authors: string[]
 }

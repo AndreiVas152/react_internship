@@ -2,14 +2,11 @@ import React, {useState} from "react";
 import Validation from "../../helpers/Validation";
 import {Button, Stack, TextInput, Typography} from "../../common";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
 import {LoginDto} from "../../Dto/RegistrationDto";
-import { useUserContext} from "../../context/userContext";
+import {loginThunk} from "../../store/user/thunks";
+import {useAppDispatch} from "../../hooks/hooks";
 
 const Login: React.FC = () => {
-
-    const userContext = useUserContext()
-
     interface LoginFormErrors {
         email?: string,
         password?: string
@@ -18,6 +15,7 @@ const Login: React.FC = () => {
     const [formValues, setFormValues] = useState<LoginDto>({} as LoginDto)
     const [errors, setErrors] = useState<LoginFormErrors>({})
     const navigate = useNavigate()
+    const dispatch = useAppDispatch();
 
     const handleChange = (event) => {
         const target = event.target
@@ -36,18 +34,8 @@ const Login: React.FC = () => {
         if (!Object.values(currentErrors).every(value => value === undefined)) {
             return
         }
-        try {
-            const response= await axios.post('http://localhost:4000/login', {
-                email: formValues.email,
-                password: formValues.password
-            })
-            if (response.data.successful) {
-                console.log(response)
-                localStorage.setItem("accessToken", response.data.result)
-                userContext.authenticate(response.data.user.name)
-                navigate("/courses", {replace: true})
-            }
-        }   catch(error){console.log("Login failed")}
+        dispatch(loginThunk(formValues))
+        navigate("/courses", {replace: true})
     }
 
     return (

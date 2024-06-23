@@ -1,5 +1,4 @@
 import React from "react";
-import {mockedAuthorsList} from "../../../../Assets/mockedCoursesList";
 import GetCourseDuration from "../../../../helpers/getCourseDuration";
 import Button from "../../../../common/Button/Button";
 import {CourseDto} from "src/Dto/CourseDto"
@@ -7,15 +6,21 @@ import Stack from "../../../../common/Stack/Stack";
 import Typography from "../../../../common/Typography/Typography";
 import GetAuthorNames from "../../../../helpers/getAuthorNames";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
+import {deleteCourseAction} from "../../../../store/courses/actions";
+import TrashIcon from "../../../../common/Button/Icons/TrashIcon";
+import EditIcon from "../../../../common/Button/Icons/EditIcon";
 
 interface Props {
     course: CourseDto,
 }
 
 
-
 const CourseCard: React.FC<Props> = ({course}) => {
     const navigate = useNavigate()
+    const {authors} = useAppSelector(state => state.authors)
+    const dispatch = useAppDispatch()
+
     return (
         <Stack flex={'none'} style={{
             backgroundColor: '#FFFFFF',
@@ -39,7 +44,7 @@ const CourseCard: React.FC<Props> = ({course}) => {
                         <Typography
                             style={{fontWeight: 500}}>Authors:&nbsp;</Typography>
                         <Typography
-                            style={{whiteSpace: 'nowrap'}}>{GetAuthorNames(course.authors, mockedAuthorsList)}</Typography>
+                            style={{whiteSpace: 'nowrap'}}>{GetAuthorNames(course.authors, authors)}</Typography>
                     </Stack>
                     <Stack flexDirection={'row'}>
                         <Typography
@@ -51,7 +56,14 @@ const CourseCard: React.FC<Props> = ({course}) => {
                             style={{fontWeight: 500}}>Created:&nbsp;</Typography>
                         <Typography
                             style={{whiteSpace: 'nowrap'}}>{course.creationDate}</Typography></Stack>
-                    <Button style={{marginTop: 32}} onClick={() => navigate(`/courses/${course.id}`)}>Show Course</Button>
+                    <Stack style={{marginTop: 32}} flexDirection={"row"}>
+                        <Button style={{marginRight: 8}} onClick={() => navigate(`/courses/${course.id}`)}>Show
+                            Course</Button>
+                        <Button variant={'icon'} style={{marginRight: 8}} onClick={() => dispatch(deleteCourseAction(course.id))}>
+                            <TrashIcon/>
+                        </Button>
+                        <Button variant={'icon'} ><EditIcon/></Button>
+                    </Stack>
                 </Stack>
             </Stack>
         </Stack>

@@ -2,8 +2,8 @@ import React, {useState} from "react"
 import {Button, Stack, TextInput, Typography} from "../../common";
 import Validation from "../../helpers/Validation";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
 import {RegistrationDto} from "../../Dto/RegistrationDto";
+import {registerService} from "../../services";
 
 interface RegistrationProps {
 
@@ -41,12 +41,10 @@ const Registration: React.FC<RegistrationProps> = () => {
         if (!Object.values(currentErrors).every(value => value === undefined)) {
             return
         }
-        await axios.post('http://localhost:4000/register', {
-            name: formValues.name,
-            email: formValues.email,
-            password: formValues.password
-        })
-        navigate("/login", {replace: true})
+        const response = await registerService(formValues)
+        if(response){
+            navigate("/login", {replace: true})
+        }
     }
 
 
