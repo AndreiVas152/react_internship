@@ -8,7 +8,13 @@ export interface RegistrationDto extends LoginDto {
 }
 
 export interface LoginResultDto {
+
     name: string,
     email: string,
     token: string,
+}
+
+export interface UserInfoDto extends LoginResultDto{
+
+    role: string
 }

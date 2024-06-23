@@ -1,6 +1,6 @@
-import {LoginDto, LoginResultDto} from "../../Dto/RegistrationDto";
+import {LoginDto, LoginResultDto, UserInfoDto} from "../../Dto/RegistrationDto";
 import {getUserInfoService, loginService, logoutService} from "../../services";
-import {logoutAction, setUserInfoAction, UserAction} from "./actions";
+import {loginAction, logoutAction, setUserInfoAction, UserAction} from "./actions";
 import {ThunkDispatch} from "redux-thunk";
 import {RootState} from "../index";
 import {fetchCoursesThunk} from "../courses/thunks";
@@ -9,12 +9,13 @@ type UserThunk = ThunkDispatch<RootState, unknown, UserAction>
 
 export const loginThunk = (dto: LoginDto) => async (dispatch: UserThunk) => {
     const response: LoginResultDto = await loginService(dto)
-    dispatch(setUserInfoAction(response))
+    dispatch(loginAction(response))
+    await dispatch(getUserInfoThunk(response.token))
     dispatch(fetchCoursesThunk())
 }
 
 export const getUserInfoThunk = (accessToken: string) => async (dispatch: UserThunk) => {
-    const response: LoginResultDto = await getUserInfoService(accessToken)
+    const response: UserInfoDto = await getUserInfoService(accessToken)
     dispatch(setUserInfoAction(response))
 }
 

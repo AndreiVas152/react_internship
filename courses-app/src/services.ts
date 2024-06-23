@@ -1,7 +1,8 @@
 import {CourseDto, CreateCourseDto} from "./Dto/CourseDto";
 import axios from "axios";
-import {LoginDto, LoginResultDto, RegistrationDto} from "./Dto/RegistrationDto";
+import {LoginDto, LoginResultDto, RegistrationDto, UserInfoDto} from "./Dto/RegistrationDto";
 import {AuthorDto} from "./Dto/AuthorDto";
+import {number} from "prop-types";
 
 const BASE_URL = "http://localhost:4000"
 
@@ -16,7 +17,8 @@ export const loginService = async (details: LoginDto) => {
             return {
                 name: response.data.user.name,
                 email: response.data.user.email,
-                token: response.data.result
+                token: response.data.result,
+                role: null
             }
         }
     } catch (error) {
@@ -24,7 +26,7 @@ export const loginService = async (details: LoginDto) => {
     }
 }
 
-export const getUserInfoService = async (accessToken: string): Promise<LoginResultDto> => {
+export const getUserInfoService = async (accessToken: string): Promise<UserInfoDto> => {
     try {
         if (accessToken) {
             const response = await axios.get(`${BASE_URL}/users/me`, {
@@ -33,7 +35,7 @@ export const getUserInfoService = async (accessToken: string): Promise<LoginResu
                 }
             })
 
-            return response.data.result as LoginResultDto
+            return response.data.result as UserInfoDto
         }
     } catch (error) {
         console.log(error)
@@ -43,7 +45,7 @@ export const getUserInfoService = async (accessToken: string): Promise<LoginResu
 export const logoutService = async () => {
     const accessToken = localStorage.getItem("accessToken")
     try {
-        await axios.delete(`${BASE_URL}/logout`, {headers: {Authorization: accessToken}})
+        console.log(await axios.delete(`${BASE_URL}/logout`, {headers: {Authorization: accessToken}}))
 
         localStorage.clear()
     } catch (error) {
@@ -65,6 +67,7 @@ export const fetchCoursesService = async (): Promise<CourseDto[]> => {
 export const addCourseService = async (course: CreateCourseDto): Promise<CourseDto> => {
     try {
         const accessToken = localStorage.getItem("accessToken")
+
         const response = await axios.post(`${BASE_URL}/courses/add`, {
             title: course.title,
             description: course.description,
@@ -95,13 +98,54 @@ export const fetchAuthorsService = async (): Promise<AuthorDto[]> => {
 
 export const registerService = async (details: RegistrationDto): Promise<boolean> => {
     try {
-        const response = await axios.post('http://localhost:4000/register', {
+        const response = await axios.post(`${BASE_URL}/register`, {
             name: details.name,
             email: details.email,
             password: details.password
         })
         return !!response.data.successful;
     } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteCourseService = async (courseId: string) : Promise<boolean> => {
+    const accessToken = localStorage.getItem("accessToken")
+    try{
+
+        const response = await axios.delete(`${BASE_URL}/courses/${courseId}`, {headers: {Authorization: accessToken}})
+        return response.data.successful
+
+    }catch (error){
+        console.log(error)
+    }
+}
+
+export const addAuthorService = async (author: string) : Promise<AuthorDto> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken")
+        const response = await axios.post(`${BASE_URL}/authors/add`, {
+            name: author
+        }, {
+            headers: {
+                Authorization: accessToken
+            }
+        })
+
+        return response.data.result as AuthorDto
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteAuthorService = async (authorId: string) : Promise<boolean> => {
+    try{
+        const accessToken = localStorage.getItem("accessToken")
+
+        const response = await axios.delete(`${BASE_URL}/authors/${authorId}`, {headers: {Authorization: accessToken}})
+        return response.data.successful
+
+    }catch (error){
         console.log(error)
     }
 }

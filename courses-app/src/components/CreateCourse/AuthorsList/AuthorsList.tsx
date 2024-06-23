@@ -6,7 +6,7 @@ import Validation from "../../../helpers/Validation";
 
 interface AuthorListProps {
     allAuthors: AuthorDto[],
-    onCreateAuthor: (a: AuthorDto) => void
+    onCreateAuthor: (authorName: string) => void
     onAuthorSelected: (a: AuthorDto) => void
 }
 
@@ -27,11 +27,8 @@ const AuthorsList: React.FC<AuthorListProps> = ({allAuthors, onCreateAuthor, onA
         if (currentError) {
             return false;
         }
-        const newAuthor = {
-            id: generateGUID(),
-            name: newAuthorName
-        };
-        onCreateAuthor(newAuthor);
+
+        onCreateAuthor(newAuthorName);
         setNewAuthorName('')
         return false;
     }, [ newAuthorName, onCreateAuthor]);
