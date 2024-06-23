@@ -1,21 +1,30 @@
-import {LoginResultDto} from "../../Dto/RegistrationDto";
+import {LoginResultDto, UserInfoDto} from "../../Dto/RegistrationDto";
 import {AuthActionTypes} from "./types";
 import {Action} from "redux";
 
-export type UserAction = ISetUserInfoAction | ILogoutAction
+export type UserAction = ISetUserInfoAction | ILogoutAction | ILoginAction
 
-interface ISetUserInfoAction extends Action {
+interface ILoginAction extends Action {
     type: AuthActionTypes.LOGIN
     payload: LoginResultDto
+}
+
+interface ISetUserInfoAction extends Action {
+    type: AuthActionTypes.GET_INFO
+    payload: UserInfoDto
 }
 
 interface ILogoutAction extends Action {
     type: AuthActionTypes.LOGOUT
 }
 
-
-export const setUserInfoAction = (user: LoginResultDto): ISetUserInfoAction => ({
+export const loginAction = (user: LoginResultDto): ILoginAction => ({
     type: AuthActionTypes.LOGIN,
+    payload: user
+})
+
+export const setUserInfoAction = (user: UserInfoDto): ISetUserInfoAction => ({
+    type: AuthActionTypes.GET_INFO,
     payload: user
 })
 

@@ -5,16 +5,14 @@ import Validation from "../../helpers/Validation";
 import CourseAuthors from "./CourseAuthors/CourseAuthors";
 import AuthorsList from "./AuthorsList/AuthorsList";
 import GetCourseDuration from "../../helpers/getCourseDuration";
-import generateGUID from "../../helpers/generateGUID";
-import {getCreationDate} from "../../helpers/getCreationDate";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../hooks/hooks";
-import {addAuthorAction} from "../../store/authors/actions";
+import {addCourseThunk} from "../../store/courses/thunks";
+import {addAuthorThunk} from "../../store/authors/thunks";
 
 
 interface CreateCourseProps {
     allAuthors: AuthorDto[]
-    onAddNewCourse: (courseDto) => void
 }
 
 interface CreateCourseFormValues {
@@ -31,7 +29,7 @@ interface CreateCourseFormErrors {
     author?: string
 }
 
-const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors}) => {
+const CreateCourse: React.FC<CreateCourseProps> = ({ allAuthors : authorsList}) => {
     const [formValues, setFormValues] = useState<CreateCourseFormValues>({
         title: '',
         authors: [],
@@ -39,7 +37,6 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
         duration: 0
     })
     const [errors, setErrors] = useState<CreateCourseFormErrors>({})
-    const [authorsList, setAuthorsList] = useState<AuthorDto[]>(allAuthors)
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
@@ -74,11 +71,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
         }))
     }, [setFormValues]);
 
-    const onAuthorCreated = useCallback((a: AuthorDto) => {
-        dispatch(addAuthorAction(a))
-        setAuthorsList(prev =>
-            ([...prev, a]
-            ))
+    const onAuthorCreated = useCallback((authorName: string) => {
+        dispatch(addAuthorThunk(authorName))
     }, [authorsList, setFormValues]);
 
     const handleSubmit = (event) => {
@@ -93,14 +87,13 @@ const CreateCourse: React.FC<CreateCourseProps> = ({onAddNewCourse, allAuthors})
         if (!Object.values(currentErrors).every(value => value === undefined)) {
             return
         }
-        onAddNewCourse({
-            id: generateGUID(),
+        console.log(typeof(formValues.duration))
+        dispatch(addCourseThunk({
             title: formValues.title,
             authors: formValues.authors,
-            duration: formValues.duration,
+            duration: Number(formValues.duration),
             description: formValues.description,
-            creationDate: getCreationDate()
-        })
+        }))
         navigate("/courses")
     }
 

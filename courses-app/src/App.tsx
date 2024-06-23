@@ -1,15 +1,12 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import Stack from "./common/Stack/Stack";
-import {CourseDto} from "./Dto/CourseDto";
 import {Courses, Login, Registration, Header, CreateCourse, RedirectComponent} from "./components"
-import { Route, Routes} from "react-router";
+import {Route, Routes} from "react-router";
 import CourseInfoWrapper from "./components/CourseInfo/CourseInfoWrapper/CourseInfoWrapper";
 import {useAppDispatch, useAppSelector} from "./hooks/hooks";
 import {fetchCoursesThunk} from "./store/courses/thunks";
 import {fetchAuthorsThunk} from "./store/authors/thunks";
-import {addCourseAction} from "./store/courses/actions";
-
-
+import {PrivateRoute} from "./components/PrivateRoute/PrivateRoute";
 
 
 function App() {
@@ -18,29 +15,26 @@ function App() {
     const dispatch = useAppDispatch()
     const accessToken = localStorage.getItem("accessToken")
 
-    useEffect(()=> {
-        if(accessToken){
+    useEffect(() => {
+        if (accessToken) {
             dispatch(fetchCoursesThunk())
             dispatch(fetchAuthorsThunk())
         }
     }, [])
 
-
-
-    const onAddNewCourse = useCallback((a: CourseDto) => {
-        dispatch(addCourseAction(a))
-    }, [courses]);
-
     return (
         <Stack style={{width: '100vw', height: '100vh'}}>
             <Header/>
             <Routes>
-                <Route path="/" element={<RedirectComponent/>} />
+                <Route path="/" element={<RedirectComponent/>}/>
                 <Route path="/courses" element={<Courses courses={courses}/>}/>
                 <Route path="/courses/:courseId"
-                       element={<CourseInfoWrapper courses={courses} />}/>
+                       element={<CourseInfoWrapper courses={courses}/>}/>
                 <Route path="/courses/add"
-                       element={<CreateCourse onAddNewCourse={onAddNewCourse} allAuthors={authors}/>}/>
+                       element={
+                           <PrivateRoute>
+                               <CreateCourse allAuthors={authors}/>
+                           </PrivateRoute>}/>
                 <Route path="/registration" element={<Registration/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/*" element={<RedirectComponent/>}/>

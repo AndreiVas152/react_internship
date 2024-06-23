@@ -10,6 +10,6 @@ export interface CourseDto{
 export interface CreateCourseDto{
     title: string
     description: string
-    duration: string
+    duration: number
     authors: string[]
 }

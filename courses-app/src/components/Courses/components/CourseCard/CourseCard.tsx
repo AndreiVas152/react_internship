@@ -7,9 +7,9 @@ import Typography from "../../../../common/Typography/Typography";
 import GetAuthorNames from "../../../../helpers/getAuthorNames";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/hooks";
-import {deleteCourseAction} from "../../../../store/courses/actions";
 import TrashIcon from "../../../../common/Button/Icons/TrashIcon";
 import EditIcon from "../../../../common/Button/Icons/EditIcon";
+import {deleteCourseThunk} from "../../../../store/courses/thunks";
 
 interface Props {
     course: CourseDto,
@@ -19,6 +19,7 @@ interface Props {
 const CourseCard: React.FC<Props> = ({course}) => {
     const navigate = useNavigate()
     const {authors} = useAppSelector(state => state.authors)
+    const {role: userRole} = useAppSelector(state => state.user)
     const dispatch = useAppDispatch()
 
     return (
@@ -59,10 +60,15 @@ const CourseCard: React.FC<Props> = ({course}) => {
                     <Stack style={{marginTop: 32}} flexDirection={"row"}>
                         <Button style={{marginRight: 8}} onClick={() => navigate(`/courses/${course.id}`)}>Show
                             Course</Button>
-                        <Button variant={'icon'} style={{marginRight: 8}} onClick={() => dispatch(deleteCourseAction(course.id))}>
-                            <TrashIcon/>
-                        </Button>
-                        <Button variant={'icon'} ><EditIcon/></Button>
+
+                        {userRole && userRole === "admin" &&
+                            <>
+                                <Button variant={'icon'} style={{marginRight: 8}}
+                                        onClick={() => dispatch(deleteCourseThunk(course.id))}>
+                                    <TrashIcon/>
+                                </Button>
+                                <Button variant={'icon'}><EditIcon/></Button>
+                            </>}
                     </Stack>
                 </Stack>
             </Stack>

@@ -3,8 +3,8 @@ class Validation {
     static regEx = {
         userName: /^[A-Za-z]{3,}(?:\s[A-Za-z]{3,})?$/,
             // /^[a-zA-Z0-9]{3,}$/,
-        email: /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{+}$/,
-        password: /^\S+$/,
+        email: /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        password: /^[A-Za-z0-9]{2,}$/,
             // /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{5,}$/
         title: /\S{2}.*/,
         description: /\S{2}.*/,
@@ -18,12 +18,12 @@ class Validation {
         }
     }
     static email(value: string): string {
-        if(!value || !Validation.regEx.password.test(value)){
+        if(!value || !Validation.regEx.email.test(value)){
             return 'Please enter a valid email address'
         }
     }
     static password(value: string): string {
-        if(!value || !Validation.regEx.userName.test(value)){
+        if(!value || !Validation.regEx.password.test(value)){
             return 'Please enter a valid password'
         }
     }
