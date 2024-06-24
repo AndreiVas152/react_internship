@@ -160,7 +160,7 @@ export const updateCourseService = async (course: CourseDto): Promise<CourseDto>
             authors: course.authors
         }
 
-        const response = await axios.put(`${BASE_URL}/courses/${course.id}`, {payload}, {headers: {Authorization: accessToken}})
+        const response = await axios.put(`${BASE_URL}/courses/${course.id}`, payload, {headers: {Authorization: accessToken}})
 
         return response.data.result
 
