@@ -25,6 +25,14 @@ export const coursesReducer = (state: ICourseState = coursesInitialState, action
         case CourseActionTypes.FETCH_COURSES:
             return {...state, courses: action.payload}
 
+        case CourseActionTypes.UPDATE_COURSE:
+            return {
+                ...state,
+                courses: state.courses
+                    .filter(course => course.id !== action.payload.id)
+                    .concat(action.payload)
+            }
+
         default:
             return state
     }

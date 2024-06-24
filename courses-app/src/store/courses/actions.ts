@@ -22,7 +22,12 @@ interface IFetchCourses extends Action {
     payload: CourseDto[]
 }
 
-export type CoursesAction = IAddCourseAction | IDeleteCourseAction | ISaveCoursesAction | IFetchCourses
+interface IUpdateCourse extends Action {
+    type: CourseActionTypes.UPDATE_COURSE
+    payload: CourseDto
+}
+
+export type CoursesAction = IAddCourseAction | IDeleteCourseAction | ISaveCoursesAction | IFetchCourses | IUpdateCourse
 
 
 export const addCourseAction = (course: CourseDto) : IAddCourseAction => ({
@@ -43,4 +48,9 @@ export const saveCoursesAction = (courses: CourseDto[]): ISaveCoursesAction => (
 export const fetchCoursesAction = (courses: CourseDto[]): IFetchCourses => ({
     type: CourseActionTypes.FETCH_COURSES,
     payload: courses
+})
+
+export const updateCourseAction = (course: CourseDto): IUpdateCourse => ({
+    type: CourseActionTypes.UPDATE_COURSE,
+    payload: course
 })

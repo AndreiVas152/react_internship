@@ -108,19 +108,19 @@ export const registerService = async (details: RegistrationDto): Promise<boolean
     }
 }
 
-export const deleteCourseService = async (courseId: string) : Promise<boolean> => {
+export const deleteCourseService = async (courseId: string): Promise<boolean> => {
     const accessToken = localStorage.getItem("accessToken")
-    try{
+    try {
 
         const response = await axios.delete(`${BASE_URL}/courses/${courseId}`, {headers: {Authorization: accessToken}})
         return response.data.successful
 
-    }catch (error){
+    } catch (error) {
         console.log(error)
     }
 }
 
-export const addAuthorService = async (author: string) : Promise<AuthorDto> => {
+export const addAuthorService = async (author: string): Promise<AuthorDto> => {
     try {
         const accessToken = localStorage.getItem("accessToken")
         const response = await axios.post(`${BASE_URL}/authors/add`, {
@@ -137,14 +137,34 @@ export const addAuthorService = async (author: string) : Promise<AuthorDto> => {
     }
 }
 
-export const deleteAuthorService = async (authorId: string) : Promise<boolean> => {
-    try{
+export const deleteAuthorService = async (authorId: string): Promise<boolean> => {
+    try {
         const accessToken = localStorage.getItem("accessToken")
 
         const response = await axios.delete(`${BASE_URL}/authors/${authorId}`, {headers: {Authorization: accessToken}})
         return response.data.successful
 
-    }catch (error){
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updateCourseService = async (course: CourseDto): Promise<CourseDto> => {
+    try {
+        const accessToken = localStorage.getItem("accessToken")
+
+        const payload: CreateCourseDto = {
+            title: course.title,
+            description: course.description,
+            duration: Number(course.duration),
+            authors: course.authors
+        }
+
+        const response = await axios.put(`${BASE_URL}/courses/${course.id}`, {payload}, {headers: {Authorization: accessToken}})
+
+        return response.data.result
+
+    } catch (error) {
         console.log(error)
     }
 }

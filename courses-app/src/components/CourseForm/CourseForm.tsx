@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Button, Stack, TextInput, Typography} from "../../common";
 import {AuthorDto} from "../../Dto/AuthorDto";
 import Validation from "../../helpers/Validation";
@@ -6,17 +6,14 @@ import CourseAuthors from "./CourseAuthors/CourseAuthors";
 import AuthorsList from "./AuthorsList/AuthorsList";
 import GetCourseDuration from "../../helpers/getCourseDuration";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../hooks/hooks";
-<<<<<<< HEAD
-=======
-import {addAuthorAction} from "../../store/authors/actions";
->>>>>>> origin/feature/redux_async_methods
-import {addCourseThunk} from "../../store/courses/thunks";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {addCourseThunk, updateCourseThunk} from "../../store/courses/thunks";
 import {addAuthorThunk} from "../../store/authors/thunks";
+import {CourseDto} from "../../Dto/CourseDto";
 
 
-interface CreateCourseProps {
-    allAuthors: AuthorDto[]
+interface CourseFormProps {
+    courseToUpdate?: CourseDto
 }
 
 interface CreateCourseFormValues {
@@ -33,7 +30,10 @@ interface CreateCourseFormErrors {
     author?: string
 }
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ allAuthors : authorsList}) => {
+const CourseForm: React.FC<CourseFormProps> = ({courseToUpdate}) => {
+
+    const {authors: authorsList} = useAppSelector(state => state.authors)
+
     const [formValues, setFormValues] = useState<CreateCourseFormValues>({
         title: '',
         authors: [],
@@ -43,6 +43,18 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ allAuthors : authorsList}) 
     const [errors, setErrors] = useState<CreateCourseFormErrors>({})
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (courseToUpdate) {
+            setFormValues({
+                title: courseToUpdate.title,
+                authors: courseToUpdate.authors,
+                description: courseToUpdate.description,
+                duration: courseToUpdate.duration
+            })
+        }
+    }, [])
+
 
     const handleChange = (event) => {
         const target = event.target
@@ -91,13 +103,23 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ allAuthors : authorsList}) 
         if (!Object.values(currentErrors).every(value => value === undefined)) {
             return
         }
-        console.log(typeof(formValues.duration))
-        dispatch(addCourseThunk({
+        const courseToDispatch = {
             title: formValues.title,
             authors: formValues.authors,
             duration: Number(formValues.duration),
             description: formValues.description,
-        }))
+        }
+
+        if (courseToUpdate) {
+            console.log(`updating course ${courseToUpdate.title}`)
+            dispatch(updateCourseThunk({
+                ...courseToDispatch,
+                id: courseToUpdate.id,
+                creationDate: courseToUpdate.creationDate
+            }))
+        } else {
+            dispatch(addCourseThunk(courseToDispatch))
+        }
         navigate("/courses")
     }
 
@@ -129,11 +151,11 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ allAuthors : authorsList}) 
             </Stack>
             <Stack flexDirection={'row'} style={{justifyContent: "flex-end", marginTop: 24}}>
                 <Button style={{marginRight: 16}} onClick={() => navigate("/courses", {replace: true})}>Cancel</Button>
-                <Button type={'submit'}>Create Course</Button>
+                <Button type={'submit'}>{courseToUpdate? "Update Course" : "Create Course"}</Button>
             </Stack>
         </form>
     )
 }
 
-export default CreateCourse
+export default CourseForm
 

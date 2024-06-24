@@ -1,7 +1,7 @@
 import {ThunkDispatch} from "redux-thunk";
 import {RootState} from "../index";
-import {addCourseAction, CoursesAction, deleteCourseAction, fetchCoursesAction} from "./actions";
-import {addCourseService, deleteCourseService, fetchCoursesService} from "../../services";
+import {addCourseAction, CoursesAction, deleteCourseAction, fetchCoursesAction, updateCourseAction} from "./actions";
+import {addCourseService, deleteCourseService, fetchCoursesService, updateCourseService} from "../../services";
 import {CourseDto, CreateCourseDto} from "../../Dto/CourseDto";
 
 
@@ -25,4 +25,14 @@ export const deleteCourseThunk = (courseId: string) => async (dispatch: CoursesT
 
     if (success)
         dispatch(deleteCourseAction(courseId))
+}
+
+export const updateCourseThunk = (courseToUpdate: CourseDto) => async (dispatch: CoursesThunk) => {
+    console.log("thunk for course update")
+    const response = await updateCourseService(courseToUpdate)
+
+    if(response){
+        dispatch(updateCourseAction(response))
+    }
+
 }

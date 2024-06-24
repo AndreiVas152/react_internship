@@ -6,7 +6,7 @@ export {default as EmptyCourseList} from './EmptyCourseList/EmptyCourseList'
 export {default as Registration} from './Registration/Registration'
 export {default as Login} from './Login/Login'
 export {default as Header} from './Header/Header'
-export {default as CreateCourse} from './CreateCourse/CreateCourse'
+export {default as CreateCourse} from './CourseForm/CourseForm'
 export {default as RedirectComponent} from './RedirectComponent/RedirectComponent'
 
 

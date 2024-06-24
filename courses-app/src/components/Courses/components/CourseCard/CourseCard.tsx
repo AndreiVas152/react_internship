@@ -67,7 +67,7 @@ const CourseCard: React.FC<Props> = ({course}) => {
                                         onClick={() => dispatch(deleteCourseThunk(course.id))}>
                                     <TrashIcon/>
                                 </Button>
-                                <Button variant={'icon'}><EditIcon/></Button>
+                                <Button variant={'icon'} onClick={() => navigate(`/courses/update/${course.id}`)}><EditIcon/></Button>
                             </>}
                     </Stack>
                 </Stack>
